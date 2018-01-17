@@ -73,26 +73,33 @@ $(document).on("click",".remove",function(){
   render();
 });
 
-$(document).on("click","#add",function(){
+$(document).on("click","#add",function(e){
+  e.preventDefault();
   let titleInput = $("#title").val();
   let authorInput = $("#author").val();
   let genreInput = $("#genre").val();
-  let readInput = undefined;
-  if($('#read').is(':checked')){
-    readInput = true;
+  if (titleInput === '' ||authorInput === '' || genreInput === ''){
+    $('#error').show();
   }
-  else {
-    readInput = false;
+  else{
+    $('#error').hide();
+    let readInput = undefined;
+    if($('#read').is(':checked')){
+      readInput = true;
+    }
+    else {
+      readInput = false;
+    }
+    console.log(readInput);
+
+    AddBooks(titleInput,authorInput,genreInput,readInput);
+    render();
+
+    $("#title").val('');
+    $("#author").val('');
+    $("#genre").val('');
+    $('#read').prop('checked',false);
   }
-  console.log(readInput);
-
-  AddBooks(titleInput,authorInput,genreInput,readInput);
-  render();
-
-  $("#title").val('');
-  $("#author").val('');
-  $("#genre").val('');
-  $('#read').prop('checked',false);
 });
 
 $(document).on("click",".toggle",function(){
@@ -103,5 +110,9 @@ $(document).on("click",".toggle",function(){
   render();
 });
 
+
+
+
 $('#form').hide();
+$('#error').hide();
 render();
